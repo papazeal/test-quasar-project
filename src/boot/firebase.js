@@ -1,5 +1,12 @@
 import { initializeApp } from "firebase/app";
+import {
+  getAuth,
+  browserLocalPersistence,
+  setPersistence,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { useUserStore } from "../stores/user.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -12,9 +19,22 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-initializeApp(firebaseConfig);
+export const fbApp = initializeApp(firebaseConfig);
 
-// Initialize Firebase Cloud Messaging and get a reference to the service
+// Authen
+const auth = getAuth();
+const userStore = useUserStore();
+onAuthStateChanged(auth, (user) => {
+  console.log("user:", user);
+  if (user) {
+    userStore.user = user;
+  } else {
+    console.log("clear user");
+    userStore.user = {};
+  }
+});
+
+// Cloud Message
 const messaging = getMessaging();
 
 getToken(messaging, {
@@ -38,7 +58,7 @@ getToken(messaging, {
     } else {
       // Show permission request UI
       console.log(
-        "No registration token available. Request permission to generate one."
+        "No registration token available. Request permission to generate one.",
       );
       // ...
     }

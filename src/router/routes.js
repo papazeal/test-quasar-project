@@ -4,7 +4,18 @@ const routes = [
     component: () => import("layouts/MainLayout.vue"),
     children: [{ path: "", component: () => import("pages/IndexPage.vue") }],
   },
-
+  {
+    path: "/user",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [{ path: "", component: () => import("pages/UserPage.vue") }],
+  },
+  {
+    path: "/notification",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [
+      { path: "", component: () => import("pages/NotificationPage.vue") },
+    ],
+  },
   // Always leave this as last one,
   // but you can also remove it
   {

@@ -11,16 +11,19 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
+        <q-toolbar-title></q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <q-chip clickable @click="$router.replace('user')">
+          <q-avatar size="sm" color="primary" text-color="white"
+            ><img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg"
+          /></q-avatar>
+          {{ store.user.phoneNumber || "Login" }}
+        </q-chip>
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" bordered>
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
-
         <EssentialLink
           v-for="link in essentialLinks"
           :key="link.title"
@@ -38,13 +41,23 @@
 <script>
 import { defineComponent, ref } from "vue";
 import EssentialLink from "components/EssentialLink.vue";
+import { useUserStore } from "src/stores/user";
 
 const linksList = [
   {
-    title: "Docs",
-    caption: "quasar.dev",
-    icon: "school",
-    link: "https://quasar.dev",
+    title: "Home",
+    icon: "home",
+    link: "/",
+  },
+  // {
+  //   title: "Login",
+  //   icon: "key",
+  //   link: "/login",
+  // },
+  {
+    title: "Notification",
+    icon: "alarm",
+    link: "/notification",
   },
 ];
 
@@ -56,13 +69,19 @@ export default defineComponent({
   },
 
   setup() {
-    const leftDrawerOpen = ref(false);
+    const leftDrawerOpen = ref(true);
+    const store = useUserStore();
 
     return {
       essentialLinks: linksList,
+      store: store,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
+      },
+      gotoLoginPage() {
+        console.log("login");
+        this.router.replace("/login");
       },
     };
   },

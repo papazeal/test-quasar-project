@@ -3,7 +3,7 @@
 // are not available in the service worker.
 importScripts("https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js");
 importScripts(
-  "https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"
+  "https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js",
 );
 
 // Initialize the Firebase app in the service worker by passing in
@@ -25,7 +25,7 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {
   console.log(
     "[firebase-messaging-sw.js] Received background message ",
-    payload
+    payload,
   );
   showNotification(payload);
 });
